@@ -15,13 +15,11 @@ transform = transforms.Compose([
 
 batch_size = 4
 
-# Replace 'path/to/your/subdirectory' with the actual path to your subdirectory
-train_dataset = ImageFolder(root='archive/dataset', transform=transform)
+train_dataset = ImageFolder(root='archive/train_dataset', transform=transform)
 
-# Create a DataLoader for your custom dataset
 train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
-test_dataset = ImageFolder(root='archive/dataset', transform=transform)
+test_dataset = ImageFolder(root='archive/test_dataset', transform=transform)
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 classes = ('t023','t025','t033','t034','t073','t094','t204','t217','t243','t323')
@@ -58,7 +56,7 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
         self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(59536, 120)  # Adjusted in_features to match the flattened size
+        self.fc1 = nn.Linear(59536, 120)  # Adjusted the features size to match the flattened size
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
 
@@ -138,7 +136,7 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print(f'Accuracy of the network on the 151 test images: {100 * correct // total} %')
+print(f'Accuracy of the network on the 59 test images: {100 * correct // total} %')
 
 # prepare to count predictions for each class
 correct_pred = {classname: 0 for classname in classes}
